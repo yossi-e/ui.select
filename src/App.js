@@ -17,11 +17,15 @@ class App extends Component {
           </div>
 
           <div className="row">
+            <div className="col col2">
             <UISelect options={data2}/>
+            </div>
           </div>
 
           <div className="row">
-            <UISelect options={data1}/>
+            <div className="col col3">
+              <UISelect options={data1}/>
+            </div>
           </div>
       </div>
     );

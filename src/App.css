@@ -27,10 +27,14 @@
   to { transform: rotate(360deg); }
 }
 
+.test-app .row {
+  clear: both;
+  margin-bottom: 16px;
+}
+
 .test-app .col {
   float: right;
 }
-
 
 .test-app .col.col1 {
   width: 100px;
