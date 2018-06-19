@@ -60,7 +60,7 @@ class UISelect extends Component {
         if (e.keyCode == '38' && this.state.open) {
             // up arrow
             if (this.state.currentIndex - 1 > -1) {
-                this.focusOnOption(this.state.currentIndex - 1);
+                this.setSelectedOption(this.state.currentIndex - 1,false,false);
                 this.setScrollingUl(this.ul.querySelector(".hover").previousSibling.offsetTop);
                 this.setState({
                     currentIndex: this.state.currentIndex - 1,
@@ -71,7 +71,7 @@ class UISelect extends Component {
             // down arrow
             if (this.state.open) {
                 if (this.state.currentIndex + 1 < this.state.componentOptions.length) {
-                    this.focusOnOption(this.state.currentIndex + 1)
+                    this.setSelectedOption(this.state.currentIndex + 1,false,false)
                     this.setScrollingUl(this.ul.querySelector(".hover").nextSibling.offsetTop);
                     this.setState({
                         currentIndex: this.state.currentIndex + 1,
@@ -86,7 +86,8 @@ class UISelect extends Component {
         }
         else if (e.keyCode == '13') {
             // enter
-            this.setSelectedOption(this.state.currentIndex);
+            this.setSelectedOption(this.state.currentIndex,false,true);
+            this.toggleSelect();
         }
     }
 
@@ -100,7 +101,7 @@ class UISelect extends Component {
     }
 
     // set the selcted option
-    setSelectedOption(idx) {
+    setSelectedOption(idx,isMouse,isPrint) {
         let newOptions = this.state.componentOptions.map((x, i) => {
             if (i == idx) {
                 x.selected = true;
@@ -116,11 +117,11 @@ class UISelect extends Component {
         this.setState({
             componentOptions: newOptions,
             selectedName: newOptions[idx].name,
-            open: false,
+            open: !isMouse,
             currentIndex: idx
         }, () => {
             this.state.componentOptions.filter((item, i) => {
-                if (item.selected) {
+                if (item.selected && isPrint) {
                     console.log(item.name, item.id);
                 }
             })
@@ -202,7 +203,7 @@ class UISelect extends Component {
                         }
                             key={value.id}
                             data-id={value.id}
-                            onClick={() => this.setSelectedOption(idx)}
+                            onClick={() => this.setSelectedOption(idx,true,true)}
                             onMouseMove={() => this.focusOnOption(idx)}
                         >
                             {value.name}
