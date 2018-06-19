@@ -203,7 +203,7 @@ class UISelect extends Component {
                             key={value.id}
                             data-id={value.id}
                             onClick={() => this.setSelectedOption(idx)}
-                            onMouseEnter={() => this.focusOnOption(idx)}
+                            onMouseMove={() => this.focusOnOption(idx)}
                         >
                             {value.name}
                         </li>
