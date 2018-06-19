@@ -148,6 +148,8 @@ class UISelect extends Component {
             if (item.name.indexOf(e.target.value) === 0 && e.target.value.trim() !== "" && !occured) {
                 item.hover = true;
                 item.selected = false;
+                occured = true;
+                currentIndex = i;
             }
             else {
                 item.hover = false;
@@ -169,6 +171,10 @@ class UISelect extends Component {
                 }
             })
         }
+        else {
+            if (e.target.value == "")
+                this.focusOnOption(0);
+        }
     }
 
     render() {
@@ -178,7 +184,7 @@ class UISelect extends Component {
                 ref={node => this.node = node}
             >
                 <input
-                // tab support
+                    // tab support
                     tabIndex="0"
                     className="select-value"
                     onChange={this.inputChange}
