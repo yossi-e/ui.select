@@ -120,6 +120,7 @@ class UISelect extends Component {
                 if (item.selected && isPrint) {
                     console.log(item.name, item.id);
                 }
+                this.selectInput.focus();
             })
         }
         )
@@ -186,9 +187,9 @@ class UISelect extends Component {
         return (
             <div
                 className={"select-wrapper" + (this.state.open ? " open" : "")}
-                ref={node => this.node = node}
             >
                 <input
+                ref={selectInput => this.selectInput = selectInput}
                     // tab support
                     tabIndex="0"
                     className="select-value"
