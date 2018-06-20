@@ -28,26 +28,6 @@ class UISelect extends Component {
         }
     }
 
-    // close select when clicked on body
-    // componentWillMount() {
-    //     document.addEventListener('mousedown', this.handleClick, false);
-    // }
-
-    // componentWillUnmount() {
-    //     document.removeEventListener('mousedown', this.handleClick, false);
-    // }
-
-    // handleClick = (e) => {
-    //     if (this.node.contains(e.target)) {
-    //         return;
-    //     }
-    //     setTimeout(() => {
-    //         this.setState({
-    //             open: false,
-    //         })
-    //     }, 200);
-    // }
-
     // open/close select
     toggleSelect(e) {
         this.setState({
@@ -56,37 +36,36 @@ class UISelect extends Component {
     }
 
     closeSelect(e) {
-        //let target = e.target;
         setTimeout(() => {
             this.setState({
                 open: false,
             });
         }, 200);
-        //e.target.focus();
     }
 
     // on input keypress
     keyPressHandler(e) {
         e = e || window.event;
         let scrollPosition;
+        let currentIndex = parseInt(this.state.currentIndex);
         if (e.keyCode == '38' && this.state.open) {
             // up arrow
-            if (this.state.currentIndex - 1 > -1) {
-                this.setSelectedOption(this.state.currentIndex - 1, false, false);
+            if (currentIndex - 1 > -1) {
+                this.setSelectedOption(currentIndex - 1, false, false);
                 this.setScrollingUl(this.ul.querySelector(".hover").previousSibling.offsetTop);
                 this.setState({
-                    currentIndex: this.state.currentIndex - 1,
+                    currentIndex: currentIndex - 1,
                 })
             }
         }
         else if (e.keyCode == '40') {
             // down arrow
             if (this.state.open) {
-                if (this.state.currentIndex + 1 < this.state.componentOptions.length) {
-                    this.setSelectedOption(this.state.currentIndex + 1, false, false)
+                if (currentIndex + 1 < this.state.componentOptions.length) {
+                    this.setSelectedOption(currentIndex + 1, false, false)
                     this.setScrollingUl(this.ul.querySelector(".hover").nextSibling.offsetTop);
                     this.setState({
-                        currentIndex: this.state.currentIndex + 1,
+                        currentIndex: currentIndex + 1,
                     })
                 }
             } else {
@@ -98,7 +77,7 @@ class UISelect extends Component {
         }
         else if (e.keyCode == '13') {
             // enter
-            this.setSelectedOption(this.state.currentIndex, false, true);
+            this.setSelectedOption(currentIndex, false, true);
             this.toggleSelect();
         }
     }
@@ -118,6 +97,7 @@ class UISelect extends Component {
 
     // set the selcted option
     setSelectedOption(idx, isMouse, isPrint) {
+        idx = parseInt(idx);
         let newOptions = this.state.componentOptions.map((x, i) => {
             if (i == idx) {
                 x.selected = true;
@@ -166,6 +146,7 @@ class UISelect extends Component {
 
     // input value change handler
     inputChange(e) {
+        let target = e.target;
         let occured = false;
         let currentIndex;
         let newOptions = this.state.componentOptions.map((item, i) => {
@@ -199,7 +180,6 @@ class UISelect extends Component {
             if (e.target.value == "")
                 this.focusOnOption(0);
         }
-        e.target.focus();
     }
 
     render() {
