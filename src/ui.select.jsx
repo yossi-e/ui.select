@@ -80,6 +80,20 @@ class UISelect extends Component {
             this.setSelectedOption(currentIndex, false, true);
             this.toggleSelect();
         }
+        else if (e.keyCode == "35") {
+            this.setSelectedOption((this.state.componentOptions.length-1), false, false)
+            this.setScrollingUl(this.ul.lastChild.offsetTop);
+            this.setState({
+                currentIndex: (this.state.componentOptions.length-1),
+            })
+        }
+        else if (e.keyCode == "36") {
+            this.setSelectedOption(0, false, false)
+            this.setScrollingUl(this.ul.firstChild.offsetTop);
+            this.setState({
+                currentIndex: 0,
+            })
+        }
     }
 
     // set select scroll position on up/down keys and text search
@@ -189,7 +203,7 @@ class UISelect extends Component {
                 className={"select-wrapper" + (this.state.open ? " open" : "")}
             >
                 <input
-                ref={selectInput => this.selectInput = selectInput}
+                    ref={selectInput => this.selectInput = selectInput}
                     // tab support
                     tabIndex="0"
                     className="select-value"
