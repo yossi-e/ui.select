@@ -81,10 +81,10 @@ class UISelect extends Component {
             this.toggleSelect();
         }
         else if (e.keyCode == "35") {
-            this.setSelectedOption((this.state.componentOptions.length-1), false, false)
+            this.setSelectedOption((this.state.componentOptions.length - 1), false, false)
             this.setScrollingUl(this.ul.lastChild.offsetTop);
             this.setState({
-                currentIndex: (this.state.componentOptions.length-1),
+                currentIndex: (this.state.componentOptions.length - 1),
             })
         }
         else if (e.keyCode == "36") {
@@ -106,7 +106,8 @@ class UISelect extends Component {
     }
 
     mouseClickOnOption(e) {
-        this.setSelectedOption(e.target.dataset.idx, true, true)
+        if (e.target && e.target.nodeName == "LI")
+            this.setSelectedOption(e.target.dataset.idx, true, true)
     }
 
     // set the selcted option
@@ -142,21 +143,23 @@ class UISelect extends Component {
 
     // mouse hover
     focusOnOption(e) {
-        let idx = 0;
-        if (typeof e === "object") {
-            idx = e.target.dataset.idx;
+        if (e.target && e.target.nodeName == "LI") {
+            let idx = 0;
+            if (typeof e === "object") {
+                idx = e.target.dataset.idx;
+            }
+            else {
+                idx = e;
+            }
+            let newOptions = this.state.componentOptions.map((x, i) => {
+                x.hover = (i == idx) ? true : false;
+                return x;
+            })
+            this.setState({
+                currentIndex: idx,
+                componentOptions: newOptions,
+            })
         }
-        else {
-            idx = e;
-        }
-        let newOptions = this.state.componentOptions.map((x, i) => {
-            x.hover = (i == idx) ? true : false;
-            return x;
-        })
-        this.setState({
-            currentIndex: idx,
-            componentOptions: newOptions,
-        })
     }
 
     // input value change handler
@@ -215,17 +218,21 @@ class UISelect extends Component {
                     onBlur={this.closeSelect}
                 />
                 <span className="tooltip"></span>
-                <ul className="select-options" ref={ul => this.ul = ul}>
+                <ul className="select-options" ref={ul => this.ul = ul}
+                    onClick={this.mouseClickOnOption}
+                    onMouseMove={this.focusOnOption}
+                >
                     {this.state.componentOptions.map((value, idx) =>
                         <li className={"s-option" +
                             (value.hover ? " hover" : " ") +
                             (value.selected ? " selected" : " ")
+
                         }
                             data-idx={idx}
                             key={value.id}
                             data-id={value.id}
-                            onClick={this.mouseClickOnOption}
-                            onMouseMove={this.focusOnOption}
+                        // onClick={this.mouseClickOnOption}
+                        // onMouseMove={this.focusOnOption}
                         >
                             {value.name}
                         </li>
